@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOÑOS MEREDITH</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <div class="brand">MOÑOS <span>MEREDITH</span></div>
+  <nav><a href="#catalogo">Catálogo</a><a href="#nosotros">Nosotros</a><a href="/admin">Editar catálogo</a><button class="cart-btn" onclick="abrirCarrito()">🛍️ Carrito <b id="cartCount">0</b></button></nav>
+</header>
+<section class="hero"><div><p class="eyebrow">ROSA · COQUETTE · KAWAII</p><h1>Pequeños detalles,<br><em>grandes momentos.</em></h1><p>Moños hechos para darle un toque tierno, femenino y elegante a cada look.</p><a class="button" href="#catalogo">Ver colección ♡</a></div></section>
+<section id="catalogo" class="section">
+<div class="section-title"><p class="eyebrow">NUESTRA COLECCIÓN</p><h2>Elige tu favorito</h2></div>
+<div class="grid">
+{% for p in productos %}
+<article class="card">
+<img src="{{ p.imagen }}" alt="{{ p.nombre }}">
+<div class="card-body"><span class="tag">{{ p.categoria }}</span><h3>{{ p.nombre }}</h3><p>{{ p.descripcion }}</p><div class="bottom"><strong>{{ p.precio }}</strong><span class="available">● Disponible</span></div><button class="add" onclick='agregar({{ loop.index0 }})'>Agregar al carrito ♡</button></div>
+</article>
+{% endfor %}
+</div></section>
+<section id="nosotros" class="about"><p class="eyebrow">MOÑOS MEREDITH</p><h2>Rosa, coquette kawaii<br>con un toque elegante.</h2><p>Una colección pensada para quienes aman los detalles bonitos y especiales.</p></section>
+<footer>♡ MOÑOS MEREDITH · Hecho con amor ♡</footer>
+
+<div id="overlay" class="overlay" onclick="cerrarSiFondo(event)"><aside class="cart"><button class="close" onclick="cerrarCarrito()">×</button><h2>Tu carrito 🎀</h2><div id="cartItems"></div><div class="cart-total"><span>Total</span><strong id="cartTotal">$0</strong></div><button class="whatsapp" onclick="pedirWhatsApp()">💬 Pedir por WhatsApp</button><button class="clear" onclick="vaciarCarrito()">Vaciar carrito</button></aside></div>
+<script>
+const productos = {{ productos|tojson }};
+let carrito = JSON.parse(localStorage.getItem('monosMeredithCart') || '[]');
+function precioNum(v){ return parseFloat(String(v).replace(/[^0-9.]/g,'')) || 0; }
+function dinero(n){ return '$' + n.toFixed(2).replace('.00',''); }
+function guardar(){ localStorage.setItem('monosMeredithCart', JSON.stringify(carrito)); render(); }
+function agregar(i){ const p=productos[i]; const x=carrito.find(a=>a.i===i); if(x)x.q++; else carrito.push({i,q:1}); guardar(); abrirCarrito(); }
+function render(){
+ let total=0,count=0; const box=document.getElementById('cartItems');
+ if(!carrito.length) box.innerHTML='<div class="empty">Tu carrito está vacío 🎀<br><small>Agrega un moño para comenzar.</small></div>';
+ else box.innerHTML=carrito.map((x)=>{const p=productos[x.i]; const sub=precioNum(p.precio)*x.q; total+=sub; count+=x.q; return `<div class="cart-item"><img src="${p.imagen}"><div><b>${p.nombre}</b><small>${p.precio}</small><div class="qty"><button onclick="cambiar(${x.i},-1)">−</button><span>${x.q}</span><button onclick="cambiar(${x.i},1)">+</button></div></div><strong>${dinero(sub)}</strong></div>`}).join('');
+ document.getElementById('cartCount').textContent=count; document.getElementById('cartTotal').textContent=dinero(total);
+}
+function cambiar(i,d){const x=carrito.find(a=>a.i===i); if(!x)return; x.q+=d; if(x.q<=0)carrito=carrito.filter(a=>a.i!==i); guardar();}
+function vaciarCarrito(){carrito=[];guardar();}
+function abrirCarrito(){document.getElementById('overlay').classList.add('show');render();}
+function cerrarCarrito(){document.getElementById('overlay').classList.remove('show');}
+function cerrarSiFondo(e){if(e.target.id==='overlay')cerrarCarrito();}
+function pedirWhatsApp(){
+ if(!carrito.length){alert('Agrega al menos un moño al carrito.');return;}
+ let total=0; let texto='Hola, quiero hacer un pedido en MOÑOS MEREDITH 🎀%0A%0A';
+ carrito.forEach(x=>{const p=productos[x.i]; const sub=precioNum(p.precio)*x.q; total+=sub; texto+=`• ${p.nombre} x${x.q} — ${dinero(sub)}%0A`;});
+ texto+=`%0ATotal aproximado: ${dinero(total)}%0A%0A¡Hola! ¿Me pueden confirmar disponibilidad y cómo realizar el pedido?`;
+ window.open('https://wa.me/{{ whatsapp }}?text='+texto,'_blank');
+}
+render();
+</script>
+</body></html>
