@@ -1,0 +1,34 @@
+[
+  {
+    "nombre": "Moño Rosa Coquette",
+    "precio": "$85",
+    "categoria": "Coquette",
+    "descripcion": "Moño rosa delicado con un toque elegante.",
+    "imagen": "https://placehold.co/700x700/f7d5e5/6b4358?text=Moño+Rosa",
+    "disponible": true
+  },
+  {
+    "nombre": "Moño Kawaii Perla",
+    "precio": "$95",
+    "categoria": "Kawaii",
+    "descripcion": "Diseño dulce con detalles estilo kawaii.",
+    "imagen": "https://placehold.co/700x700/fce7f2/6b4358?text=Moño+Kawaii",
+    "disponible": true
+  },
+  {
+    "nombre": "Moño Elegance",
+    "precio": "$110",
+    "categoria": "Elegante",
+    "descripcion": "Diseño sofisticado para ocasiones especiales.",
+    "imagen": "https://placehold.co/700x700/eadbe5/6b4358?text=Elegance",
+    "disponible": true
+  },
+  {
+    "nombre": "MOÑO TOY ATORY",
+    "precio": "160",
+    "categoria": "DISNEY",
+    "descripcion": "MOÑO COLETERO DE TPOY STORY",
+    "imagen": "/static/uploads/Toy_Store.jpg",
+    "disponible": true
+  }
+]

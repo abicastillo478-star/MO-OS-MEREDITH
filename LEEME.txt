@@ -1,0 +1,19 @@
+MOÑOS MEREDITH V5
+
+INICIO CON UN CLIC (Windows)
+1. Doble clic en INICIAR_TIENDA.vbs para abrir la tienda sin dejar una ventana negra visible.
+2. Si Windows bloquea el .vbs, usa INICIAR_TIENDA.bat.
+3. La tienda abre en http://127.0.0.1:5000
+4. Para administrar: http://127.0.0.1:5000/admin
+
+AGREGAR / ELIMINAR MOÑOS
+- En /admin puedes agregar productos con foto.
+- Las fotos se guardan dentro de static/uploads.
+- Los productos se guardan en productos.json.
+- Para eliminar un producto usa el botón Eliminar.
+
+WHATSAPP
+- Abre config.py y cambia WHATSAPP por tu número de México: 52 + 10 dígitos, sin +, espacios ni guiones.
+
+IMPORTANTE SOBRE PUBLICARLA EN INTERNET
+Esta versión funciona como tienda local. Para que otras personas puedan verla desde cualquier lugar hay que publicarla en un servicio de hosting. El paquete está preparado para ese siguiente paso, pero publicar una tienda con catálogo editable requiere configurar el hosting y, para que las fotos/productos sobrevivan reinicios, almacenamiento persistente.

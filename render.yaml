@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: monos-meredith
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
