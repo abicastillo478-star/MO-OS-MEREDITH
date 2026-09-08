@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editar · MOÑOS MEREDITH</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header><div class="brand">MOÑOS <span>MEREDITH</span></div><nav><a href="/">← Ver tienda</a></nav></header>
+<main class="admin">
+<h1>Editar catálogo</h1>
+<p>Agrega o elimina moños. Los cambios se guardan automáticamente en <b>productos.json</b>.</p>
+<div class="admin-help">💡 Para cambiar el WhatsApp, abre <b>config.py</b> y cambia el número indicado ahí.</div>
+<form method="post" enctype="multipart/form-data" class="form">
+<input name="nombre" placeholder="Nombre del moño" required>
+<input name="precio" placeholder="Precio, ej. $85" required>
+<input name="categoria" placeholder="Categoría, ej. Coquette" required>
+<label class="file-label">📸 Selecciona la foto de tu computadora
+<input id="foto" type="file" name="foto" accept=".jpg,.jpeg,.png,.webp,.gif" required>
+</label>
+<div id="preview" class="preview">Aquí aparecerá una vista previa de tu foto.</div>
+<small>Formatos: JPG, JPEG, PNG, WEBP o GIF · Máximo 10 MB</small>
+<textarea name="descripcion" placeholder="Descripción"></textarea>
+<button class="button" type="submit">Agregar moño ♡</button>
+<script>
+const foto = document.getElementById('foto');
+const preview = document.getElementById('preview');
+foto.addEventListener('change', () => {
+  const archivo = foto.files[0];
+  if (!archivo) { preview.textContent = 'Aquí aparecerá una vista previa de tu foto.'; return; }
+  if (archivo.size > 10 * 1024 * 1024) {
+    alert('La foto pesa más de 10 MB. Elige una foto más pequeña.');
+    foto.value = '';
+    preview.textContent = 'Aquí aparecerá una vista previa de tu foto.';
+    return;
+  }
+  const url = URL.createObjectURL(archivo);
+  preview.innerHTML = `<img src="${url}" alt="Vista previa">`;
+});
+</script>
+</form>
+<h2>Productos actuales</h2>
+<div class="admin-list">
+{% for p in productos %}
+<div class="admin-item"><span><b>{{ p.nombre }}</b> · {{ p.precio }}</span>
+<form method="post" action="/admin/eliminar/{{ loop.index0 }}"><button class="delete">Eliminar</button></form></div>
+{% endfor %}
+</div>
+</main>
+</body>
+</html>
