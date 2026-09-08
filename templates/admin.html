@@ -1,51 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Editar · MOÑOS MEREDITH</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Moño Meredith</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9dbe8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .login {
+            max-width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #6b4358;
+        }
+
+        input, textarea, select, button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        button {
+            background: #6b4358;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .error {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        .producto {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+        }
+
+        .producto img {
+            max-width: 150px;
+            border-radius: 10px;
+        }
+
+        .salir {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #6b4358;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
-<header><div class="brand">MOÑOS <span>MEREDITH</span></div><nav><a href="/">← Ver tienda</a></nav></header>
-<main class="admin">
-<h1>Editar catálogo</h1>
-<p>Agrega o elimina moños. Los cambios se guardan automáticamente en <b>productos.json</b>.</p>
-<div class="admin-help">💡 Para cambiar el WhatsApp, abre <b>config.py</b> y cambia el número indicado ahí.</div>
-<form method="post" enctype="multipart/form-data" class="form">
-<input name="nombre" placeholder="Nombre del moño" required>
-<input name="precio" placeholder="Precio, ej. $85" required>
-<input name="categoria" placeholder="Categoría, ej. Coquette" required>
-<label class="file-label">📸 Selecciona la foto de tu computadora
-<input id="foto" type="file" name="foto" accept=".jpg,.jpeg,.png,.webp,.gif" required>
-</label>
-<div id="preview" class="preview">Aquí aparecerá una vista previa de tu foto.</div>
-<small>Formatos: JPG, JPEG, PNG, WEBP o GIF · Máximo 10 MB</small>
-<textarea name="descripcion" placeholder="Descripción"></textarea>
-<button class="button" type="submit">Agregar moño ♡</button>
-<script>
-const foto = document.getElementById('foto');
-const preview = document.getElementById('preview');
-foto.addEventListener('change', () => {
-  const archivo = foto.files[0];
-  if (!archivo) { preview.textContent = 'Aquí aparecerá una vista previa de tu foto.'; return; }
-  if (archivo.size > 10 * 1024 * 1024) {
-    alert('La foto pesa más de 10 MB. Elige una foto más pequeña.');
-    foto.value = '';
-    preview.textContent = 'Aquí aparecerá una vista previa de tu foto.';
-    return;
-  }
-  const url = URL.createObjectURL(archivo);
-  preview.innerHTML = `<img src="${url}" alt="Vista previa">`;
-});
-</script>
-</form>
-<h2>Productos actuales</h2>
-<div class="admin-list">
-{% for p in productos %}
-<div class="admin-item"><span><b>{{ p.nombre }}</b> · {{ p.precio }}</span>
-<form method="post" action="/admin/eliminar/{{ loop.index0 }}"><button class="delete">Eliminar</button></form></div>
-{% endfor %}
-</div>
-</main>
+
+{% if login %}
+
+    <div class="login">
+
+        <h1>🎀 Administración</h1>
+
+        <p>Introduce la contraseña para continuar.</p>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                required
+            >
+
+            <button type="submit">
+                Entrar
+            </button>
+
+        </form>
+
+    </div>
+
+{% else %}
+
+    <div class="contenedor">
+
+        <h1>🎀 Administrar catálogo</h1>
+
+        <a class="salir" href="/logout">
+            ← Salir y volver a la tienda
+        </a>
+
+        <h2>Agregar producto</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <input
+                type="text"
+                name="nombre"
+                placeholder="Nombre del producto"
+                required
+            >
+
+            <input
+                type="text"
+                name="precio"
+                placeholder="Precio"
+                required
+            >
+
+            <input
+                type="text"
+                name="categoria"
+                placeholder="Categoría"
+                required
+            >
+
+            <textarea
+                name="descripcion"
+                placeholder="Descripción"
+                required
+            ></textarea>
+
+            <label>Foto del producto:</label>
+
+            <input
+                type="file"
+                name="foto"
+                accept=".jpg,.jpeg,.png,.webp,.gif"
+            >
+
+            <input
+                type="url"
+                name="imagen"
+                placeholder="O pega aquí una URL de imagen"
+            >
+
+            <button type="submit">
+                ➕ Agregar producto
+            </button>
+
+        </form>
+
+        <h2>Productos actuales</h2>
+
+        {% for producto in productos %}
+
+            <div class="producto">
+
+                <h3>{{ producto.nombre }}</h3>
+
+                <p>💰 {{ producto.precio }}</p>
+
+                <p>{{ producto.descripcion }}</p>
+
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+                {% endif %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for('eliminar', indice=loop.index0) }}"
+                >
+                    <button type="submit">
+                        🗑️ Eliminar
+                    </button>
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
 </body>
 </html>
