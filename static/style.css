@@ -16,22 +16,10 @@
     font-family:"Bodoni Moda",serif;
     font-weight:500;
 }
-.hero h1{
-    font-family:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif !important;
+.hero h1{font-family:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif !important;
     font-weight:400 !important;
     letter-spacing:-2px !important;
-    line-height:0.98 !important;
-}
-
-.hero h1 em{
-    font-family:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif !important;
-    font-weight:400 !important;
-    font-style:italic !important;
-}
-.brand {
-    letter-spacing:5px;
-}
-
+    line-height:0.98 !important;}
 .hero h1 {
     letter-spacing:-1px;
 }
