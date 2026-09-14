@@ -105,10 +105,49 @@ def inicio():
     productos = cargar_productos()
     return render_template("index.html", productos=productos, whatsapp=WHATSAPP)
 
+from functools import wraps
+from flask import session
 
+app.secret_key = "CAMBIA-ESTA-CLAVE"
+
+USUARIO_ADMIN = "admin"
+CONTRASENA_ADMIN = "angelcruel"
+
+def requiere_login(f):
+    @wraps(f)
+    def protegida(*args, **kwargs):
+        if not session.get("admin"):
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return protegida
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        usuario = request.form.get("usuario", "")
+        contrasena = request.form.get("contrasena", "")
+
+        if usuario == USUARIO_ADMIN and contrasena == CONTRASENA_ADMIN:
+            session["admin"] = True
+            return redirect(url_for("admin"))
+
+        return "Usuario o contraseña incorrectos", 401
+
+    return '''
+    <h2>Acceso al catálogo</h2>
+    <form method="post">
+        <input name="usuario" placeholder="Usuario" required><br><br>
+        <input name="contrasena" type="password" placeholder="Contraseña" required><br><br>
+        <button type="submit">Entrar</button>
+    </form>
+    '''
+
+@app.route("/salir")
+def salir():
+    session.pop("admin", None)
+    return redirect(url_for("login"))
 @app.route("/admin", methods=["GET", "POST"])
-def admin():
-    productos = cargar_productos()
+@requiere_logincargar_productos()
 
     if request.method == "POST":
         imagen = guardar_imagen(request.files.get("foto"))
