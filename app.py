@@ -10,7 +10,7 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = "CAMBIA-ESTA-CLAVE"
 USUARIO_ADMIN = "admin"
-CONTRASENA_ADMIN = "1234"
+CONTRASENA_ADMIN = "angelcruel"
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
 BASE_DIR = Path(__file__).resolve().parent
