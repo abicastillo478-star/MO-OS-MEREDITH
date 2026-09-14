@@ -1,12 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 import json
 import os
 import shutil
 from pathlib import Path
 from config import WHATSAPP
+from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = "CAMBIA-ESTA-CLAVE"
+USUARIO_ADMIN = "admin"
+CONTRASENA_ADMIN = "1234"
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
 BASE_DIR = Path(__file__).resolve().parent
