@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: monos-meredith
+    runtime: python
+    plan: starter
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    disk:
+      name: monos-meredith-data
+      mountPath: /var/data
+      sizeGB: 1
