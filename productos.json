@@ -30,5 +30,13 @@
     "descripcion": "MOÑO COLETERO DE TPOY STORY",
     "imagen": "/static/uploads/Toy_Store.jpg",
     "disponible": true
+  },
+  {
+    "nombre": "dkskds",
+    "precio": "dwjsjd",
+    "categoria": "wsajsja",
+    "descripcion": "WSDASKADK",
+    "imagen": "https://raw.githubusercontent.com/abicastillo478-star/MO-OS-MEREDITH/caatalogo/static/uploads/Pink_PC_Wallpapers.jpg",
+    "disponible": true
   }
 ]
